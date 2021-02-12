@@ -28356,7 +28356,7 @@ s.dx=!0
 s.k1=""
 s.x2="WON!"}}s.db=0
 s.y1=!1}r=s.db+=a
-if(r>0.75&&s.k1!==""){P.bh("Main sendTime")
+if(r>0.6&&s.k1!==""){P.bh("Main sendTime")
 s.db=-10
 P.bh("movesV=====")
 r=s.k3=s.k2
