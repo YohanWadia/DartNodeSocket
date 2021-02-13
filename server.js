@@ -5,9 +5,9 @@ const cors = require("cors");
 const app = express();
 app.use(cors());
 
-var rooms = [];
-rooms[0]=0;
-rooms[1]=0;
+var roomss = [];
+roomss[0]=0;
+roomss[1]=0;
 
 app.use(express.static("public"));
 
@@ -16,27 +16,31 @@ const server = app.listen(process.env.PORT, () => {
 });
 
 var io = socket(server);
-var count=0;
-io.on('connection',function(socket){
-    count++;
-    console.log("Player Connected...." + socket.id + " /count: "+ count);
-        if(count<=2){
-            socket.send(count);
-        }
+io.on('connection',function(socket){    
+    console.log("Player Connected...." + socket.id );//Not sending anything back cz by default a connected event is raised at the client... so i'll know 
+    
 
-
+      socket.on('RoomJoining', function(data){
+        console.log("JoiningRequest from " + data);            
+        socket.join(data);
+        console.log("Server rooms variable:"+socket.rooms);
+        socket.emit('RoomJoining', "Joined room #"+data);    
+        });
 
             //Int Array data
         socket.on('myMoves', function(data){
             console.log(data);
-            socket.broadcast.emit('myMoves', data);//this is for everyone BUT the sender
+            socket.to(data[3]).emit('myMoves', data);//data[3]will always be roomNo
+            //socket.broadcast.emit('myMoves', data);//this is for everyone BUT the sender
             //socket.emit('myMoves', data);
+            if(data[0]===999){roomss[data[3]] = 0;}//reset it to 0 after last move
         });
 
         socket.on('disconnect', function(){
-            console.log("Player Disconnected");
-            count=0;
+          console.log("Player Disconnected x-x-x-x-x-x"); 
+          console.log(socket.rooms);
         });
+  
 });
 
 
@@ -44,25 +48,22 @@ io.on('connection',function(socket){
 
 
 
-// app.get("/checkR1", (request, response) => {
-//   //console.log(request.query.email+"  "+request.query.name);
+app.get("/checkR", (request, response) => {
+ console.log(request.query.number);
+ const para = parseInt(request.query.number,10);//cause QueryStr is always a string
 
-//   response.setHeader('Content-Type', 'application/json');
-//   rooms[0]++;
-//   console.log("Room1 Query..."+ rooms[0]);
+  response.setHeader('Content-Type', 'application/json');
+  roomss[para]++;
+  console.log("Room1 Query..."+ roomss[para]);
 
-//   if(rooms[0]<=2)
-//     {
-//         response.send(JSON.stringify({message: 'Access Granted'}));
-//     }
-//     else
-//     {
-//         response.send(JSON.stringify({message: 'Access Denied'}));
-//     }
-// });
+  if(roomss[para]<=2)
+    {
+        response.send(JSON.stringify({message: 'Access Granted',ply: roomss[para]}));
+    }
+    else
+    {
+        response.send(JSON.stringify({message: 'Access Denied',ply:-1}));//-1 means nothing
+    }
+});
 
-// // listen for requests :)
-// const listener = app.listen(process.env.PORT, () => {
-//   console.log("Your app is listening on port " + listener.address().port);
-// });
 
