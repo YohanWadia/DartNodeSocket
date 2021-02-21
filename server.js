@@ -35,7 +35,7 @@ io.on('connection',function(socket){
     
         //for 2x2's all players to start when room is full
         if(data==2 && roomss[2]==4){console.log('GO GO GO');
-          socket.emit('RoomJoining', "Go"); 
+          io.in(myOwnRoom).emit('RoomJoining', "Go"); 
         }
  });
 
@@ -52,14 +52,15 @@ io.on('connection',function(socket){
   
   
       //Int Array data 2x2 server receives arr[0-4] and sendsback[1,2,3]cz plyNum & RoomNum doesnt need to be sentback
-        socket.on('myMoves', function(data){
+        socket.on('myMoves2x2', function(data){
             console.log(data);//[plyNum,what,move,taken,room]
            
           var start = data[0]*3;
           toBsent[start]=data[1];toBsent[start+1]=data[2];toBsent[start+2]=data[3];
           
           if( toBsent.includes(-1) == false){//only if all the -1 dont exist that means all players moves are filled in
-            io.in(data[4]).emit('myMoves2x2', data);//everyone in room including sender  
+            io.in(data[4]).emit('myMoves2x2', toBsent);//everyone in room including sender 
+            console.log('sent to ALL: ' + toBsent);
             toBsent = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];//after it is filled by all you can reset it
           }
             //if(data[0]===999){roomss[data[3]] = 0;}//reset it to 0 after last move
