@@ -47708,6 +47708,11 @@ i=i[1]
 n.c=new P.y(o,i,o+h[0],i+h[1])
 f.push(n)}q.z=!1
 q.y1=!0
+e=q.x2
+e[0]=5
+e[1]=5
+e[2]=10
+e[3]=10
 q.k1=f[12]
 q.k2=f[13]
 return P.a_(null,r)}})
@@ -47838,13 +47843,15 @@ n.rx="Won!"}else if(r[2]===999&&r[3]===999){n.fx=!0
 n.y=""
 n.rx="Lost!"}},
 Qz:function(a){var s,r,q,p,o,n,m,l,k=this
-for(s=k.x1,r=k.fy,q=k.ry,p=k.dx,o=0;o<4;++o)if(s[o]===999||k.k4<=1){n=r[q[o]]
+for(s=k.x1,r=k.fy,q=k.ry,p=k.dx,o=0;o<4;++o){if(s[o]!==999)n=k.k4<=1&&o===k.ch
+else n=!0
+if(n){n=r[q[o]]
 m=n.f
 n=n.r
 l=k.go.a
 l=new P.y(m,n,m+l[0],n+l[1])
 k.cy=l
-a.bU(0,l,p)}}}
+a.bU(0,l,p)}}}}
 Q.NJ.prototype={
 $1:function(a){var s=this.a
 s.dy.f5("RoomJoining",s.Q)},
