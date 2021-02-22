@@ -73,8 +73,8 @@ io.on('connection',function(socket){
         socket.on('disconnect', function(){
           console.log("Player Disconnected x-x-x-x-x-x from Room#"+myOwnRoom);           
           roomss[myOwnRoom] = 0;//reset it to 0 after last move in case it dint make it to move 999
-          console.log(socket.rooms); 
-          
+          toBsent = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
+          console.log(socket.rooms);           
         });
   
 });
